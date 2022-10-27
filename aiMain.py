@@ -1,7 +1,6 @@
 from tkinter import ttk
 from tkinter.messagebox import showinfo
 import tkinter as tk
-from cv2 import destroyAllWindows,imshow,waitKey,rectangle
 import numpy as np 
 import pickle
 import mysql.connector as mc
@@ -155,6 +154,102 @@ resetButton=tk.Button(root,
             )
 resetButton.pack(expand=True)
 
+args=[]
+def newRecord():
+    showinfo(
+        title='hint',
+        message='here you can add new person to our database and it help us in future make better decisions'
+    )
+    newWindow = tk.Tk()
+    newWindow.title("Add new person")
+    newWindow.resizable(False, False)
+    newWindow.geometry("400x300")
+    newWindow.config(background='#205090')
+
+    list_message=["attention","horny",
+                  "spend lot of time with friends",
+                  "his/her friends have same gender?",
+                  "family strict",'give score to his/her beauty',
+                  'is he/she bad person?']
+
+    msgChanger=(_ for _ in range(len(list_message)))
+
+    mainMsg=tk.Label(
+        newWindow,
+        text = "selfish",
+        foreground='white',
+        background='#708095',
+        font=(None, 15))
+    mainMsg.pack(pady=20)
+
+    userVar = tk.IntVar()
+    userInput = ttk.Entry(
+        newWindow,
+        textvariable=userVar,
+        font=(None, 15))
+
+    userInput.focus()
+    userInput.pack()
+    def nextLogic(var):
+        global args
+        def inputHandle(number):
+            if number in [0,1]:
+                return True
+            else:
+                raise AttributeError(' values must be in range 0,1')
+        try:
+            num=int(var.get())
+        except ValueError:
+            raise ValueError('value must be number')
+
+        if inputHandle(num):
+            args.append(num)
+        try:
+            mainMsg.config(text=list_message[next(msgChanger)])
+            userInput.delete(0, tk.END)
+
+        except StopIteration:
+            mainMsg.config(text='submitted')
+
+            if len(args) != 1:
+                main = mc.connect(
+                    host='localhost',
+                    user='root',
+                    password='Armanjt7',
+                )
+                # print(args)
+
+                x1,x2,x3,x4,x5,x6,x7,x8=args
+
+                Cursor = main.cursor()
+                Cursor.execute('use aiDatabase;')
+                Cursor.execute(f"""
+                        insert into maindata
+                        (selfish,attention,horny,ATHWF,MFGSH,family_strict,beauty,result)
+                        values ({x1},{x2},{x3},{x4},{x5},{x6},{x7},{x8});
+                    """)
+                main.commit()
+                args.clear()
+                newWindow.destroy()
+                newWindow.quit()
+
+
+    nextButton=tk.Button(
+        newWindow,
+        command=lambda : nextLogic(userInput),
+        text='next',
+        foreground = 'white',
+        background = '#708095',
+    )
+
+    nextButton.pack(expand=True)
+    # ---------
+addNewRecord=tk.Button(
+    root,
+    text='add new',
+    command=lambda : newRecord()
+)
+addNewRecord.pack(anchor=tk.W,ipady=10,ipadx=5)
 # -----------------------
 try:
     from ctypes import windll
