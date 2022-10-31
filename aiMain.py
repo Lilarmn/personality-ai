@@ -120,8 +120,8 @@ q7Inp.focus()
 q7Inp.pack()
 
 
-lashi='lashi'
-salem='salem'
+lashi='bad'
+salem='good'
 changeres=ttk.Label(root,text='Result :',
                     foreground='#708095',
                 background='white',
@@ -210,12 +210,14 @@ def newRecord():
 
         except StopIteration:
             mainMsg.config(text='submitted')
-
+            '''
+            write your own database info ,
+            '''
             if len(args) != 1:
                 main = mc.connect(
                     host='localhost',
                     user='root',
-                    password='Armanjt7',
+                    password='',
                 )
                 # print(args)
 

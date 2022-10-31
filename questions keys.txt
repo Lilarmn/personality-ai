@@ -1,0 +1,16 @@
+1) is he|she selfish?
+
+2) is he|she give you attention
+
+3) is he|she horny?
+
+4) is he|she spend lot of time with friends?
+
+5) is he|she friends have different gender with your person?
+
+6) is he|she have hard-faced family?
+
+7) is he|she beauty? ( score must be select between (0,0.5,1) )
+
+8) is he|she bad person?
+ 
